@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { 
   View, 
   Text, 
@@ -9,8 +9,13 @@ import {
   Image
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import BottomSheet from '../components/BottomSheet';
+import { BottomSheetContext } from '../context/BottomSheetContext';
 
 const MenuScreen = ({ navigation }) => {
+  // Add this line to use the BottomSheetContext
+  const { isOpen, toggleSheet } = useContext(BottomSheetContext);
+  
   // Menu sections and items
   const menuSections = [
     {
@@ -155,10 +160,47 @@ const MenuScreen = ({ navigation }) => {
         <Ionicons name="log-out-outline" size={20} color="white" style={styles.logoutIcon} />
         <Text style={styles.logoutText}>Me déconnecter</Text>
       </TouchableOpacity>
+      
+      {/* Add BottomSheet at the end of the component, before the closing SafeAreaView tag */}
+      <BottomSheet isOpen={isOpen} toggleSheet={toggleSheet}>
+        <View style={styles.bottomSheetContent}>
+          <View style={styles.iconGrid}>
+            <View style={styles.iconRow}>
+              <TouchableOpacity style={styles.iconContainer}>
+                <Ionicons name="document-text-outline" size={30} color="#0C2B72" />
+                <Text style={styles.iconText}>Documents</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.iconContainer}>
+                <Ionicons name="calculator-outline" size={30} color="#0C2B72" />
+                <Text style={styles.iconText}>Simulateur</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.iconContainer}>
+                <Ionicons name="card-outline" size={30} color="#0C2B72" />
+                <Text style={styles.iconText}>Paiement</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.iconRow}>
+              <TouchableOpacity style={styles.iconContainer}>
+                <Ionicons name="chatbubble-outline" size={30} color="#0C2B72" />
+                <Text style={styles.iconText}>Chat</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.iconContainer}>
+                <Ionicons name="call-outline" size={30} color="#0C2B72" />
+                <Text style={styles.iconText}>Appel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.iconContainer}>
+                <Ionicons name="mail-outline" size={30} color="#0C2B72" />
+                <Text style={styles.iconText}>Email</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </BottomSheet>
     </SafeAreaView>
   );
 };
 
+// Add these styles at the end of your existing styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -284,6 +326,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 15,
+  },
+  bottomSheetContent: {
+    flex: 1,
+    padding: 20,
+  },
+  iconGrid: {
+    marginTop: 10,
+  },
+  iconRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 30,
+  },
+  iconContainer: {
+    alignItems: 'center',
+    width: '30%',
+  },
+  iconText: {
+    marginTop: 8,
+    fontSize: 14,
+    color: '#333',
+    textAlign: 'center',
   },
 });
 

@@ -7,12 +7,17 @@ import {
   TouchableOpacity, 
   SafeAreaView,
   ActivityIndicator,
-  Linking // <-- Ajoutez ceci
+  Linking
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import HomeStyles from '../styles/HomeStyles';
 import API_CONFIG from '../config/api';
+import BottomSheet from '../components/BottomSheet';
+import { useSharedValue } from 'react-native-reanimated'; // Add this import
+// Make sure these imports are at the top
+import { useContext } from 'react';
+import { BottomSheetContext } from '../context/BottomSheetContext';
 
 // Pre-import all possible logos
 const logos = {
@@ -35,6 +40,7 @@ const getLogoForContract = (contractName) => {
   }
 };
 
+// In the HomeScreen component:
 const HomeScreen = ({ navigation }) => {
   // State for insurance cards
   const [insuranceCards, setInsuranceCards] = useState([]);
@@ -183,6 +189,16 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
+
+  // Use the context
+  const { isOpen, toggleSheet } = useContext(BottomSheetContext);
+
+  const handleToggle = () => {
+    console.log('BottomSheet state before toggle:', isOpen.value); // Debug log
+    toggleSheet();
+    console.log('BottomSheet state after toggle:', isOpen.value); // Debug log
+  };
+
   return (
     <SafeAreaView style={HomeStyles.container}>
       {/* Header with profile */}
@@ -299,6 +315,11 @@ const HomeScreen = ({ navigation }) => {
           )}
         </View>
       </ScrollView>
+      <BottomSheet isOpen={isOpen} toggleSheet={toggleSheet}>
+        <View style={{ flex: 1, padding: 20 }}>
+          <Text style={{ fontSize: 18 }}>Hello from Bottom Sheet!</Text>
+        </View>
+      </BottomSheet>
     </SafeAreaView>
   );
 };

@@ -6,7 +6,11 @@ export default function CustomTabBar(props) {
   return (
     <ImageBackground
       source={require('../assets/img/menu/background.png')}
-      style={{ width: '100%', height: 80 }}
+      style={{
+        width: '100%',
+        height: 80,
+        zIndex: 100, // Highest
+      }}
       resizeMode="cover"
     >
       <BottomTabBar {...props} />
